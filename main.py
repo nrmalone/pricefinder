@@ -1,11 +1,12 @@
 import os
-from time import sleep
 from sys import exit
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.action_chains import ActionChains
 import tkinter as tk
+#TODO: pip install selectorlib
+import selectorlib
 
 driverpath = os.path.abspath(os.sep) + 'chromedriver.exe'
 
@@ -25,43 +26,65 @@ def search():
 
     while i < (len(items)):
         if items[i] != "":
+            
+            if(i > 0):
+                browser.execute_script("window.open('', 'new_window')")
+
             match marketplaceSelection:
 
                 case "Google":
-                    browser.get('https://shopping.google.com')
-                    sleep(1)
+                    marketplaceUrl = 'https://shopping.google.com'
+                    if (i==0):
+                        browser.get(marketplaceUrl)
+                    else:
+                        browser.switch_to.window(browser.window_handles[-1])
+                        browser.get(marketplaceUrl)
+                    
+                    browser.implicitly_wait(0.5)
                     searchbar = browser.find_element(By.XPATH, '/html/body/c-wiz[1]/div/div/c-wiz/form/div[2]/div[1]/input')
+                    typeItem(searchbar, items[i])
                 
                 case "Amazon":
-                    browser.get('https://www.amazon.com')
-                    sleep(1)
+                    marketplaceUrl = 'https://www.amazon.com'
+                    if (i==0):
+                        browser.get(marketplaceUrl)
+                    else:
+                        browser.switch_to.window(browser.window_handles[-1])
+                        browser.get(marketplaceUrl)
+                    
+                    browser.implicitly_wait(0.5)
                     searchbar = browser.find_element(By.XPATH, '/html/body/div[1]/header/div/div[1]/div[2]/div/form/div[2]/div[1]/input')
+                    typeItem(searchbar, items[i])
                 
                 case "Ebay":
-                    browser.get('https://ebay.com')
-                    sleep(1)
+                    marketplaceUrl = 'https://ebay.com'
+                    if (i==0):
+                        browser.get(marketplaceUrl)
+                    else:
+                        browser.switch_to.window(browser.window_handles[-1])
+                        browser.get(marketplaceUrl)
+                    
+                    browser.implicitly_wait(0.5)
                     searchbar = browser.find_element(By.XPATH, '/html/body/header/table/tbody/tr/td[5]/form/table/tbody/tr/td[1]/div[1]/div/input[1]')
+                    typeItem(searchbar, items[i])
             
+            """
             searchbar.click()
             searchbar.send_keys(items[i])
             searchbar.send_keys(Keys.ENTER)
+            """
 
             # Saves window opener;
             # unsure if relevant past current iteration of while loop
             currentWindow = browser.current_window_handle
 
-            # TODO: figure out iterating thru next item once new tab is open
-            """
-            browser.execute_script("window.open('https://shopping.google.com', 'new_window')")
-            browser.switch_to_window(browser.window_handles[0])
-            """
-
-            
-
-            #print(browser.current_url)
-
-            sleep(1)
+            browser.implicitly_wait(0.5)
             i+= 1
+
+def typeItem(searchElement, searchText):
+    searchElement.click()
+    searchElement.send_keys(searchText)
+    searchElement.send_keys(Keys.ENTER)
 
 # GUI
 frame = tk.Tk()
