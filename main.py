@@ -4,6 +4,7 @@ from sys import exit
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.common.action_chains import ActionChains
 import tkinter as tk
 
 driverpath = os.path.abspath(os.sep) + 'chromedriver.exe'
@@ -44,6 +45,18 @@ def search():
             searchbar.click()
             searchbar.send_keys(items[i])
             searchbar.send_keys(Keys.ENTER)
+
+            # Saves window opener;
+            # unsure if relevant past current iteration of while loop
+            currentWindow = browser.current_window_handle
+
+            # TODO: figure out iterating thru next item once new tab is open
+            """
+            browser.execute_script("window.open('https://shopping.google.com', 'new_window')")
+            browser.switch_to_window(browser.window_handles[0])
+            """
+
+            
 
             #print(browser.current_url)
 
