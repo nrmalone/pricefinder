@@ -95,9 +95,7 @@ def savePrices():
     
     with open('pricefinderresults.csv', mode='w') as results_file:
         writer = csv.writer(results_file, delimiter=',', quotechar='"')
-        
-        for i in urlList:
-            writer.writerow(urlList)
+        writer.writerow(urlList)
     
 
 # GUI
