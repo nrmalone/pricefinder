@@ -1,12 +1,14 @@
 import os
+import csv
 from sys import exit
+import tkinter as tk
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.action_chains import ActionChains
-import tkinter as tk
-#TODO: pip install selectorlib, prepping for web scraping search results
-import selectorlib
+#TODO: pip install selectorlib, might use for web scraping search results
+#import selectorlib
+
 
 urlList = []
 driverpath = os.path.abspath(os.sep) + 'chromedriver.exe'
@@ -66,14 +68,8 @@ def searchItems():
                 browser.implicitly_wait(0.5)
                 searchbar = browser.find_element(By.XPATH, '/html/body/header/table/tbody/tr/td[5]/form/table/tbody/tr/td[1]/div[1]/div/input[1]')
                 typeItem(searchbar, items[i])
-        
-        """
-        searchbar.click()
-        searchbar.send_keys(items[i])
-        searchbar.send_keys(Keys.ENTER)
-        """
 
-        # Saves window opener;
+        # Saves window opener
         # unsure if relevant past current iteration of while loop
         currentWindow = browser.current_window_handle
 
@@ -94,6 +90,15 @@ def typeItem(searchElement, searchText):
 
 def savePrices():
     print(urlList)
+
+    # TODO: Figure out writing each url in urlList to csv output file
+    
+    with open('pricefinderresults.csv', mode='w') as results_file:
+        writer = csv.writer(results_file, delimiter=',', quotechar='"')
+        
+        for i in urlList:
+            writer.writerow(urlList)
+    
 
 # GUI
 frame = tk.Tk()
